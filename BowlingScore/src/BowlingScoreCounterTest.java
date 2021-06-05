@@ -6,22 +6,22 @@ class BowlingScoreCounterTest {
     BowlingScoreCounter scoreCounter = BowlingScoreCounterFactory.createBowlingScoreCounter();
     @Test
     void testAllStrike(){
-        String test = "X X X X X X X X X X X X";
+        String test = "X X X X X X X X X XXX";
         assertEquals(300, scoreCounter.countScore(test));
     }
     @Test
     void testAllSpare5(){
-        String test = "5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5";
+        String test = "5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/5";
         assertEquals(150, scoreCounter.countScore(test));
     }
     @Test
     void testAllSpareMiss(){
-        String test = "-/ -/ -/ -/ -/ -/ -/ -/ -/ -/ -";
+        String test = "-/ -/ -/ -/ -/ -/ -/ -/ -/ -/-";
         assertEquals(100, scoreCounter.countScore(test));
     }
     @Test
         void testAllSpare9(){
-            String test = "9/ 9/ 9/ 9/ 9/ 9/ 9/ 9/ 9/ 9/ 9";
+            String test = "9/ 9/ 9/ 9/ 9/ 9/ 9/ 9/ 9/ 9/9";
             assertEquals(190, scoreCounter.countScore(test));
     }
     @Test
@@ -41,7 +41,7 @@ class BowlingScoreCounterTest {
     }
     @Test
         void testVariousFrames2(){
-            String test = "X X 81 9/ X -8 8/ X 9- 6/ X";
+            String test = "X X 81 9/ X -8 8/ X 9- 6/X";
             assertEquals(170, scoreCounter.countScore(test));
     }
 

@@ -1,27 +1,12 @@
 public class BowlingScoreCounterImpl implements BowlingScoreCounter{
-    //Maximum number of frames in the game
-    private final int MAX_FRAME;
-    /**
-     * Constructor for standardized number of "turns" (10 turns)
-     */
-    public BowlingScoreCounterImpl() {
-        MAX_FRAME = 10;
-    }
-    /**
-     * @param frameNumber - number of "turns" in a bowling game, allows for customized numbers of turns
-     */
-    public BowlingScoreCounterImpl(int frameNumber){
-        MAX_FRAME = frameNumber;
-    }
-
     /**
      * Pre-condition: Needs to be a valid string of frames
      * @param frames - The result for each frame for a single player, from a finished game.
      *               -  Given as a String where a space (' ') indicates the end of a frame,
-     *               'X' indicates a strike,
-     *               '/'indicates a spare,
-     *               '-' indicates a miss,
-     *               and the ints 1-9 indicates the number of pins knocked down for each roll.
+     *               'X' is a strike,
+     *               '/'is a spare,
+     *               '-' is a miss,
+     *               the numbers 1-9 indicates the number of pins knocked down for each roll.
      * @return The total score for all frames and rolls.
      */
     @Override
@@ -30,13 +15,8 @@ public class BowlingScoreCounterImpl implements BowlingScoreCounter{
         int frameScore = 0;
         int frameCount = 0;
         for(int i=0;i<frames.length();i++){
-            //Checks if max frame is reached,
-            // if so the potential following throws are bonus throws already handled by strikeBonus() or spareBonus().
-            if(frameCount == MAX_FRAME){
-                break;
-            }
             switch(frames.charAt(i)) {
-                //End of frame, adds frameScore to totalScore and resets for next frame
+                //End of frame, adds frameScore to totalScore and resets for next frame.
                 case ' ':
                     totalScore += frameScore;
                     frameScore = 0;
@@ -44,11 +24,21 @@ public class BowlingScoreCounterImpl implements BowlingScoreCounter{
                     break;
                 //Strike, sets the frameScore to 10 + bonus for the scores in the following two rolls.
                 case 'X':
-                    frameScore = 10 + strikeBonus(frames,i);
+                    //Handles bonus throws that are part of the last frame.
+                    if(frameCount == 9){
+                        frameScore += 10;
+                    }
+                    else{frameScore = 10 + strikeBonus(frames,i);}
                     break;
                 //Spare, sets the frameScore to 10 + bonus for the score in the next roll.
                 case '/':
-                    frameScore = 10 + spareBonus(frames,i);
+                    //Handles bonus throw that are part of the last frame.
+                    if(frameCount == 9){
+                        frameScore = 10;
+                    }
+                    else {
+                        frameScore = 10 + spareBonus(frames, i);
+                    }
                 //Miss, no points.
                 case '-':
                     break;
@@ -57,12 +47,12 @@ public class BowlingScoreCounterImpl implements BowlingScoreCounter{
                         frameScore += convertCharToInt(frames.charAt(i));
             }
         }
-        //adds the last frame to totalScore, and returns result
+        //adds the last frame to totalScore, and returns result.
         return totalScore+frameScore;
     }
 
     /**
-     * Pre-condition: Needs to be a character of a number 1-9, else 0 is returned
+     * Pre-condition: c needs to be a character of a number 1-9, else 0 is returned
      * @param c - a character that will be returned as an int.
      * @return an int of the character c
      */
